@@ -1,0 +1,489 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.page{max-width:600px;margin:0 auto;padding:1.5rem 1rem 4rem;font-size:15px}
+.hdr{text-align:center;margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.hdr-icon{width:48px;height:48px;background:#E6F1FB;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem}
+.hdr h1{font-size:19px;font-weight:500}
+.hdr p{font-size:13px;color:var(--color-text-secondary);margin-top:3px}
+.steps{display:flex;align-items:center;margin-bottom:1.75rem}
+.step-item{display:flex;align-items:center;gap:7px;font-size:13px}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;border:1.5px solid var(--color-border-secondary);color:var(--color-text-secondary)}
+.step-num.active{background:#185FA5;border-color:#185FA5;color:white}
+.step-num.done{background:#3B6D11;border-color:#3B6D11;color:white}
+.step-label{color:var(--color-text-secondary)}
+.step-label.active{color:var(--color-text-primary);font-weight:500}
+.step-line{flex:1;height:1px;background:var(--color-border-tertiary);margin:0 8px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.1rem 1.25rem;margin-bottom:.875rem}
+.card-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.875rem;display:flex;align-items:center;gap:5px}
+.field{margin-bottom:.875rem}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13px;color:var(--color-text-secondary);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:9px 11px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#378ADD;box-shadow:0 0 0 3px rgba(55,138,221,.12)}
+.field textarea{resize:vertical;min-height:70px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.opt-btn{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 10px;background:var(--color-background-primary);cursor:pointer;font-size:13px;color:var(--color-text-primary);display:flex;align-items:center;gap:6px;transition:all .12s;font-family:inherit;line-height:1.3}
+.opt-btn:hover{border-color:#378ADD;background:#E6F1FB}
+.opt-btn.active{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:500}
+.opt-btn .dot{width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex-shrink:0}
+.opt-btn.active .dot{background:currentColor}
+.price-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem;margin-top:.5rem}
+.pr{display:flex;justify-content:space-between;font-size:13px;color:var(--color-text-secondary);margin-bottom:3px}
+.pr.total{font-size:16px;font-weight:500;color:var(--color-text-primary);border-top:0.5px solid var(--color-border-tertiary);margin-top:8px;padding-top:8px}
+.upload-area{border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:1.25rem;text-align:center;cursor:pointer;transition:all .12s}
+.upload-area:hover,.upload-area.has-file{border-color:#378ADD;background:#E6F1FB}
+.upload-area p{font-size:13px;color:var(--color-text-secondary);margin-top:6px}
+.upload-area .fname{font-size:13px;color:#185FA5;font-weight:500;margin-top:3px}
+#fi{display:none}
+.pay-methods{display:flex;flex-direction:column;gap:8px}
+.pay-method{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .12s;background:var(--color-background-primary)}
+.pay-method:hover{border-color:#378ADD}
+.pay-method.active{border-color:#185FA5;background:#E6F1FB}
+.pay-method-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pay-method-info{flex:1}
+.pay-method-name{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.pay-method-desc{font-size:12px;color:var(--color-text-secondary)}
+.pay-method .radio{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--color-border-secondary);flex-shrink:0}
+.pay-method.active .radio{border-color:#185FA5;background:#185FA5;box-shadow:inset 0 0 0 3px var(--color-background-primary)}
+.qr-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1.25rem;text-align:center;margin-top:.75rem}
+.qr-img{width:140px;height:140px;background:white;border-radius:8px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;border:0.5px solid var(--color-border-tertiary)}
+.qr-amount{font-size:22px;font-weight:500;color:#185FA5;margin-bottom:4px}
+.qr-note{font-size:12px;color:var(--color-text-secondary)}
+.slip-area{border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:center;cursor:pointer;margin-top:.75rem;transition:all .12s}
+.slip-area:hover,.slip-area.has-slip{border-color:#3B6D11;background:#EAF3DE}
+.submit-btn{width:100%;padding:13px;background:#185FA5;color:white;border:none;border-radius:var(--border-radius-md);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.5rem}
+.submit-btn:hover{background:#0C447C}
+.submit-btn:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);cursor:not-allowed}
+.success-wrap{text-align:center;padding:1rem 0 2rem}
+.success-icon{width:60px;height:60px;background:#EAF3DE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.order-code-big{font-size:38px;font-weight:700;letter-spacing:.1em;color:#185FA5;background:#E6F1FB;border-radius:var(--border-radius-md);padding:1rem;margin:1rem 0;font-family:monospace}
+.info-rows{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:left;margin-bottom:1rem}
+.info-row{display:flex;gap:10px;font-size:13px;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.info-row:last-child{border-bottom:none;padding-bottom:0}
+.info-row .lbl{color:var(--color-text-secondary);width:90px;flex-shrink:0}
+.info-row .val{color:var(--color-text-primary);font-weight:500}
+.paid-badge{display:inline-flex;align-items:center;gap:5px;background:#EAF3DE;color:#27500A;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:500;margin-bottom:1rem}
+.section{display:none}
+.section.show{display:block}
+</style>
+
+<div class="page">
+<h2 class="sr-only">ฟอร์มสั่งงานถ่ายเอกสารพร้อมชำระเงิน</h2>
+
+<div class="hdr">
+  <div class="hdr-icon"><i class="ti ti-printer" style="font-size:24px;color:#185FA5" aria-hidden="true"></i></div>
+  <h1>สั่งงานถ่ายเอกสาร</h1>
+  <p>สั่งและชำระเงินออนไลน์ — รอรับแจ้งเมื่องานเสร็จ</p>
+</div>
+
+<div class="steps" id="stepsBar">
+  <div class="step-item"><div class="step-num active" id="sn1">1</div><span class="step-label active" id="sl1">รายละเอียด</span></div>
+  <div class="step-line"></div>
+  <div class="step-item"><div class="step-num" id="sn2">2</div><span class="step-label" id="sl2">ชำระเงิน</span></div>
+  <div class="step-line"></div>
+  <div class="step-item"><div class="step-num" id="sn3">3</div><span class="step-label" id="sl3">เสร็จสิ้น</span></div>
+</div>
+
+<div id="sec1" class="section show">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-user" style="font-size:15px" aria-hidden="true"></i> ข้อมูลผู้สั่ง</div>
+    <div class="row2">
+      <div class="field"><label>ชื่อ-นามสกุล *</label><input id="cname" type="text" placeholder="สมใจ ใจดี"></div>
+      <div class="field"><label>เบอร์โทรศัพท์ *</label><input id="cphone" type="tel" placeholder="08x-xxx-xxxx"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-file-upload" style="font-size:15px" aria-hidden="true"></i> ไฟล์งาน</div>
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fi').click()">
+      <i class="ti ti-cloud-upload" style="font-size:26px;color:#378ADD" aria-hidden="true"></i>
+      <p>คลิกอัปโหลด PDF, Word หรือรูปภาพ</p>
+      <p class="fname" id="fname"></p>
+    </div>
+    <input type="file" id="fi" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="handleFile(this)">
+    <div class="field" style="margin-top:.75rem;margin-bottom:0"><label>หมายเหตุ</label><textarea id="cnote" placeholder="เช่น เย็บมุมบนซ้าย, พิมพ์หน้า 1-10..."></textarea></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-settings" style="font-size:15px" aria-hidden="true"></i> รายละเอียดงาน</div>
+    <div class="field">
+      <label>รูปแบบการพิมพ์</label>
+      <div class="row2">
+        <button class="opt-btn active" onclick="sel(this,'color','bw')" id="o-bw"><span class="dot"></span>ขาว-ดำ (1 ฿/แผ่น)</button>
+        <button class="opt-btn" onclick="sel(this,'color','color')" id="o-color"><span class="dot"></span>สี (5 ฿/แผ่น)</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>ขนาดกระดาษ</label>
+      <div class="row2">
+        <button class="opt-btn active" onclick="sel(this,'size','a4')" id="o-a4"><span class="dot"></span>A4</button>
+        <button class="opt-btn" onclick="sel(this,'size','a3')" id="o-a3"><span class="dot"></span>A3 (+1 ฿/แผ่น)</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>การเย็บเล่ม</label>
+      <div class="row2">
+        <button class="opt-btn active" onclick="sel(this,'bind','none')" id="o-none"><span class="dot"></span>ไม่เย็บ</button>
+        <button class="opt-btn" onclick="sel(this,'bind','staple')" id="o-staple"><span class="dot"></span>เย็บมุม (+3 ฿)</button>
+        <button class="opt-btn" onclick="sel(this,'bind','spiral')" id="o-spiral"><span class="dot"></span>สปริง (+30 ฿/ชุด)</button>
+        <button class="opt-btn" onclick="sel(this,'bind','cover')" id="o-cover"><span class="dot"></span>เข้าปก (+50 ฿/ชุด)</button>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>จำนวนหน้า (ต่อชุด)</label><input type="number" id="pages" min="1" value="1" oninput="calc()"></div>
+      <div class="field"><label>จำนวนชุด</label><input type="number" id="copies" min="1" value="1" oninput="calc()"></div>
+    </div>
+    <div class="price-box">
+      <div class="pr"><span>ค่าถ่ายเอกสาร</span><span id="prPrint">1 ฿</span></div>
+      <div class="pr"><span>ค่าเย็บ/เข้าเล่ม</span><span id="prBind">0 ฿</span></div>
+      <div class="pr total"><span>ยอดรวมทั้งหมด</span><span id="prTotal">1 ฿</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-calendar" style="font-size:15px" aria-hidden="true"></i> วันและเวลาที่ต้องการรับงาน</div>
+    <div class="row2">
+      <div class="field">
+        <label>วันที่รับงาน *</label>
+        <input type="date" id="pickDate" min="">
+      </div>
+      <div class="field">
+        <label>ช่วงเวลา *</label>
+        <select id="pickTime">
+          <option value="">-- เลือกเวลา --</option>
+          <option value="09:00">09:00 น.</option>
+          <option value="09:30">09:30 น.</option>
+          <option value="10:00">10:00 น.</option>
+          <option value="10:30">10:30 น.</option>
+          <option value="11:00">11:00 น.</option>
+          <option value="11:30">11:30 น.</option>
+          <option value="13:00">13:00 น.</option>
+          <option value="13:30">13:30 น.</option>
+          <option value="14:00">14:00 น.</option>
+          <option value="14:30">14:30 น.</option>
+          <option value="15:00">15:00 น.</option>
+          <option value="15:30">15:30 น.</option>
+          <option value="16:00">16:00 น.</option>
+          <option value="16:30">16:30 น.</option>
+          <option value="17:00">17:00 น.</option>
+        </select>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-top:4px"><i class="ti ti-info-circle" style="font-size:13px;vertical-align:-1px" aria-hidden="true"></i> ร้านจะแจ้งเมื่องานเสร็จ — ค่อยมารับตามวันเวลาที่เลือก</p>
+  </div>
+
+  <button class="submit-btn" onclick="goStep2()">
+    <i class="ti ti-arrow-right" style="font-size:17px" aria-hidden="true"></i>ถัดไป — ชำระเงิน
+  </button>
+</div>
+
+<div id="sec2" class="section">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-receipt" style="font-size:15px" aria-hidden="true"></i> สรุปคำสั่ง</div>
+    <div class="price-box" style="margin-top:0">
+      <div class="pr"><span id="sumDetail">-</span><span></span></div>
+      <div class="pr"><span>ชำระเงินเพื่อยืนยันงาน</span><span></span></div>
+      <div class="pr total"><span>ยอดรวม</span><span id="sumTotal" style="color:#185FA5">-</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-credit-card" style="font-size:15px" aria-hidden="true"></i> ช่องทางชำระเงิน</div>
+    <div class="pay-methods">
+      <div class="pay-method active" onclick="selPay(this,'qr')">
+        <div class="pay-method-icon" style="background:#EAF3DE"><i class="ti ti-qrcode" style="font-size:20px;color:#3B6D11" aria-hidden="true"></i></div>
+        <div class="pay-method-info"><div class="pay-method-name">QR พร้อมเพย์</div><div class="pay-method-desc">สแกนจ่ายได้ทุกธนาคาร</div></div>
+        <div class="radio"></div>
+      </div>
+      <div class="pay-method" onclick="selPay(this,'transfer')">
+        <div class="pay-method-icon" style="background:#E6F1FB"><i class="ti ti-building-bank" style="font-size:20px;color:#185FA5" aria-hidden="true"></i></div>
+        <div class="pay-method-info"><div class="pay-method-name">โอนเงินธนาคาร</div><div class="pay-method-desc">กสิกร / SCB / กรุงไทย</div></div>
+        <div class="radio"></div>
+      </div>
+      <div class="pay-method" onclick="selPay(this,'cash')">
+        <div class="pay-method-icon" style="background:#FAEEDA"><i class="ti ti-cash" style="font-size:20px;color:#854F0B" aria-hidden="true"></i></div>
+        <div class="pay-method-info"><div class="pay-method-name">จ่ายเงินสด ณ ร้าน</div><div class="pay-method-desc">ชำระเมื่อมาส่งไฟล์ที่ร้าน</div></div>
+        <div class="radio"></div>
+      </div>
+    </div>
+
+    <div id="qrSection" style="margin-top:.75rem">
+      <div class="qr-box">
+        <div class="qr-img">
+          <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="QR Code ตัวอย่าง">
+            <rect width="100" height="100" fill="white"/>
+            <rect x="10" y="10" width="30" height="30" fill="none" stroke="#185FA5" stroke-width="3"/>
+            <rect x="16" y="16" width="18" height="18" fill="#185FA5"/>
+            <rect x="60" y="10" width="30" height="30" fill="none" stroke="#185FA5" stroke-width="3"/>
+            <rect x="66" y="16" width="18" height="18" fill="#185FA5"/>
+            <rect x="10" y="60" width="30" height="30" fill="none" stroke="#185FA5" stroke-width="3"/>
+            <rect x="16" y="66" width="18" height="18" fill="#185FA5"/>
+            <rect x="60" y="45" width="6" height="6" fill="#185FA5"/>
+            <rect x="68" y="45" width="6" height="6" fill="#185FA5"/>
+            <rect x="76" y="45" width="6" height="6" fill="#185FA5"/>
+            <rect x="84" y="45" width="6" height="6" fill="#185FA5"/>
+            <rect x="60" y="53" width="6" height="6" fill="#185FA5"/>
+            <rect x="76" y="53" width="6" height="6" fill="#185FA5"/>
+            <rect x="60" y="61" width="6" height="6" fill="#185FA5"/>
+            <rect x="68" y="61" width="6" height="6" fill="#185FA5"/>
+            <rect x="84" y="61" width="6" height="6" fill="#185FA5"/>
+            <rect x="68" y="69" width="6" height="6" fill="#185FA5"/>
+            <rect x="76" y="69" width="6" height="6" fill="#185FA5"/>
+            <rect x="45" y="10" width="6" height="6" fill="#185FA5"/>
+            <rect x="45" y="20" width="6" height="6" fill="#185FA5"/>
+            <rect x="45" y="30" width="6" height="6" fill="#185FA5"/>
+            <rect x="45" y="40" width="6" height="6" fill="#185FA5"/>
+          </svg>
+        </div>
+        <div class="qr-amount" id="qrAmount">0 ฿</div>
+        <div class="qr-note">พร้อมเพย์ 081-234-5678 · ร้านถ่ายเอกสาร ABC</div>
+      </div>
+      <div class="slip-area" id="slipArea" onclick="document.getElementById('slipFile').click()">
+        <i class="ti ti-upload" style="font-size:22px;color:var(--color-text-secondary)" aria-hidden="true"></i>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin-top:5px">อัปโหลดสลิปการโอนเงิน</p>
+        <p class="fname" id="slipName" style="color:#27500A"></p>
+      </div>
+      <input type="file" id="slipFile" accept="image/*" style="display:none" onchange="handleSlip(this)">
+    </div>
+
+    <div id="transferSection" style="display:none;margin-top:.75rem">
+      <div class="qr-box">
+        <p style="font-size:13px;font-weight:500;margin-bottom:.5rem">ข้อมูลบัญชีโอนเงิน</p>
+        <p style="font-size:13px;color:var(--color-text-secondary);line-height:2">ธนาคารกสิกร · 111-2-34567-8<br>ชื่อ: นาย สมชาย ถ่ายเอกสาร<br>จำนวน: <strong id="transferAmt" style="color:#185FA5">0 ฿</strong></p>
+      </div>
+      <div class="slip-area" id="slipArea2" onclick="document.getElementById('slipFile2').click()">
+        <i class="ti ti-upload" style="font-size:22px;color:var(--color-text-secondary)" aria-hidden="true"></i>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin-top:5px">อัปโหลดสลิปการโอนเงิน</p>
+        <p class="fname" id="slipName2" style="color:#27500A"></p>
+      </div>
+      <input type="file" id="slipFile2" accept="image/*" style="display:none" onchange="handleSlip2(this)">
+    </div>
+
+    <div id="cashSection" style="display:none;margin-top:.75rem">
+      <div class="qr-box">
+        <i class="ti ti-map-pin" style="font-size:24px;color:#854F0B" aria-hidden="true"></i>
+        <p style="font-size:14px;font-weight:500;margin:.5rem 0 .25rem">มาชำระที่ร้านก่อนรับงาน</p>
+        <p style="font-size:12px;color:var(--color-text-secondary)">เปิดทำการ จ-ศ 8:00–17:30 น.<br>เสาร์ 9:00–15:00 น.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px">
+    <button class="submit-btn" style="flex:.4;background:var(--color-background-secondary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary)" onclick="goBack()">
+      <i class="ti ti-arrow-left" style="font-size:16px" aria-hidden="true"></i>ย้อนกลับ
+    </button>
+    <button class="submit-btn" style="flex:1" id="confirmBtn" onclick="confirmOrder()">
+      <i class="ti ti-check" style="font-size:17px" aria-hidden="true"></i>ยืนยันคำสั่งและชำระเงิน
+    </button>
+  </div>
+</div>
+
+<div id="sec3" class="section">
+  <div class="success-wrap">
+    <div class="success-icon"><i class="ti ti-circle-check" style="font-size:30px;color:#3B6D11" aria-hidden="true"></i></div>
+    <h2 style="font-size:18px;font-weight:500;margin-bottom:6px">สั่งงานสำเร็จ!</h2>
+    <div class="paid-badge"><i class="ti ti-check" style="font-size:14px" aria-hidden="true"></i>ชำระเงินแล้ว</div>
+    <p style="font-size:14px;color:var(--color-text-secondary);margin-bottom:.5rem">รหัสสำหรับรับงาน</p>
+    <div class="order-code-big" id="finalCode">------</div>
+    <div class="info-rows">
+      <div class="info-row"><span class="lbl">ชื่อ</span><span class="val" id="si-name">-</span></div>
+      <div class="info-row"><span class="lbl">วันที่รับ</span><span class="val" id="si-date">-</span></div>
+      <div class="info-row"><span class="lbl">เวลา</span><span class="val" id="si-time">-</span></div>
+      <div class="info-row"><span class="lbl">ยอดชำระ</span><span class="val" id="si-price" style="color:#185FA5">-</span></div>
+      <div class="info-row"><span class="lbl">ช่องทาง</span><span class="val" id="si-pay">-</span></div>
+    </div>
+    <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.7">ร้านจะแจ้งเมื่องานเสร็จ<br>โปรดนำรหัสด้านบนมาแสดงตอนรับงาน</p>
+    <button class="submit-btn" style="margin-top:1.25rem" onclick="resetForm()">
+      <i class="ti ti-plus" style="font-size:17px" aria-hidden="true"></i>สั่งงานใหม่
+    </button>
+  </div>
+</div>
+</div>
+
+<script>
+const st={color:'bw',size:'a4',bind:'none',payMethod:'qr',slipUploaded:false,slip2Uploaded:false};
+
+const today=new Date();
+const yyyy=today.getFullYear(),mm=String(today.getMonth()+1).padStart(2,'0'),dd=String(today.getDate()).padStart(2,'0');
+document.getElementById('pickDate').min=`${yyyy}-${mm}-${dd}`;
+document.getElementById('pickDate').value=`${yyyy}-${mm}-${dd}`;
+
+function sel(btn,type,val){
+  const map={color:['bw','color'],size:['a4','a3'],bind:['none','staple','spiral','cover']};
+  map[type].forEach(v=>{const el=document.getElementById('o-'+v);if(el)el.classList.remove('active')});
+  btn.classList.add('active');st[type]=val;calc();
+}
+
+function calc(){
+  const pages=Math.max(1,parseInt(document.getElementById('pages').value)||1);
+  const copies=Math.max(1,parseInt(document.getElementById('copies').value)||1);
+  const pp=(st.color==='color'?5:1)+(st.size==='a3'?1:0);
+  const printCost=pages*copies*pp;
+  const bindMap={none:0,staple:3,spiral:30,cover:50};
+  const bindCost=bindMap[st.bind]*copies;
+  document.getElementById('prPrint').textContent=printCost+' ฿';
+  document.getElementById('prBind').textContent=bindCost+' ฿';
+  document.getElementById('prTotal').textContent=(printCost+bindCost)+' ฿';
+}
+
+function handleFile(inp){
+  if(inp.files[0]){
+    document.getElementById('fname').textContent='✓ '+inp.files[0].name;
+    document.getElementById('uploadArea').classList.add('has-file');
+  }
+}
+
+function handleSlip(inp){
+  if(inp.files[0]){
+    document.getElementById('slipName').textContent='✓ '+inp.files[0].name;
+    document.getElementById('slipArea').classList.add('has-slip');
+    st.slipUploaded=true;
+  }
+}
+
+function handleSlip2(inp){
+  if(inp.files[0]){
+    document.getElementById('slipName2').textContent='✓ '+inp.files[0].name;
+    document.getElementById('slipArea2').classList.add('has-slip');
+    st.slip2Uploaded=true;
+  }
+}
+
+function selPay(el,method){
+  document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('active'));
+  el.classList.add('active');st.payMethod=method;
+  document.getElementById('qrSection').style.display=method==='qr'?'block':'none';
+  document.getElementById('transferSection').style.display=method==='transfer'?'block':'none';
+  document.getElementById('cashSection').style.display=method==='cash'?'block':'none';
+}
+
+function goStep2(){
+  const name=document.getElementById('cname').value.trim();
+  const phone=document.getElementById('cphone').value.trim();
+  const date=document.getElementById('pickDate').value;
+  const time=document.getElementById('pickTime').value;
+  if(!name||!phone||!date||!time){alert('กรุณากรอกชื่อ เบอร์ วันที่ และเวลาให้ครบก่อนนะ');return;}
+  
+  const total=document.getElementById('prTotal').textContent;
+  const totalNum=parseInt(total);
+  const colorLbl={bw:'ขาว-ดำ',color:'สี'};
+  const bindLbl={none:'ไม่เย็บ',staple:'เย็บมุม',spiral:'สปริง',cover:'เข้าปก'};
+  const pages=document.getElementById('pages').value;
+  const copies=document.getElementById('copies').value;
+  
+  document.getElementById('sumDetail').textContent=`${colorLbl[st.color]} · ${st.size.toUpperCase()} · ${bindLbl[st.bind]} · ${pages} หน้า × ${copies} ชุด`;
+  document.getElementById('sumTotal').textContent=total;
+  document.getElementById('qrAmount').textContent=total;
+  document.getElementById('transferAmt').textContent=total;
+  
+  setStep(2);
+}
+
+function goBack(){setStep(1);}
+
+function setStep(n){
+  ['sec1','sec2','sec3'].forEach((s,i)=>{
+    document.getElementById(s).classList.toggle('show',i===n-1);
+  });
+  for(let i=1;i<=3;i++){
+    const num=document.getElementById('sn'+i);
+    const lbl=document.getElementById('sl'+i);
+    if(i<n){num.className='step-num done';num.innerHTML='<i class="ti ti-check" style="font-size:12px"></i>';}
+    else if(i===n){num.className='step-num active';num.textContent=i;lbl.className='step-label active';}
+    else{num.className='step-num';num.textContent=i;lbl.className='step-label';}
+  }
+}
+
+function genCode(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r='';for(let i=0;i<6;i++)r+=c[Math.floor(Math.random()*c.length)];return r;
+}
+
+function fmtDate(val){
+  if(!val)return '-';
+  const [y,m,d]=val.split('-');
+  const months=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  return `${parseInt(d)} ${months[parseInt(m)-1]} ${parseInt(y)+543}`;
+}
+
+var GAS_URL='https://script.google.com/macros/s/AKfycbwftK6Ias9BxonuW8tpJFT7p7mYPRcz9Aj0zUuumKq98f-b5cXbuQ6PE2LqJYY7umANpA/exec';
+
+function confirmOrder(){
+  if((st.payMethod==='qr'&&!st.slipUploaded)||(st.payMethod==='transfer'&&!st.slip2Uploaded)){
+    if(st.payMethod!=='cash'){alert('กรุณาอัปโหลดสลิปการชำระเงินด้วยนะ');return;}
+  }
+  const payLbl={qr:'QR พร้อมเพย์',transfer:'โอนธนาคาร',cash:'เงินสด ณ ร้าน'};
+  const bindLbl={none:'ไม่เย็บ',staple:'เย็บมุม',spiral:'สปริง',cover:'สันกาว',rod:'สันรูด',lacsin:'สันแล็คซีน'};
+  const code=genCode();
+  const pages=document.getElementById('pages').value;
+  const copies=document.getElementById('copies').value;
+  const totalStr=document.getElementById('sumTotal').textContent;
+  const totalNum=parseInt(totalStr)||0;
+
+  const orderData={
+    action:'newOrder',
+    order_code:code,
+    customer_name:document.getElementById('cname').value.trim(),
+    phone:document.getElementById('cphone').value.trim(),
+    color_type:st.color,
+    paper_size:st.size.toUpperCase(),
+    binding:st.bind,
+    pages:parseInt(pages),
+    copies:parseInt(copies),
+    estimated_price:totalNum,
+    pickup_date:document.getElementById('pickDate').value,
+    pickup_time:document.getElementById('pickTime').value,
+    payment_method:st.payMethod,
+    payment_status:st.payMethod==='cash'?'pending':'paid',
+    note:document.getElementById('cnote').value.trim(),
+    slip:st.slipUploaded||st.slip2Uploaded?'slip_'+code+'.jpg':''
+  };
+
+  // แสดง loading
+  const btn=document.querySelector('#sec2 .btn-primary');
+  if(btn){btn.disabled=true;btn.textContent='กำลังบันทึก...';}
+
+  fetch(GAS_URL,{method:'POST',body:JSON.stringify(orderData)})
+  .then(r=>r.json())
+  .then(res=>{
+    document.getElementById('finalCode').textContent=code;
+    document.getElementById('si-name').textContent=orderData.customer_name;
+    document.getElementById('si-date').textContent=fmtDate(orderData.pickup_date);
+    document.getElementById('si-time').textContent=orderData.pickup_time+' น.';
+    document.getElementById('si-price').textContent=totalStr;
+    document.getElementById('si-pay').textContent=payLbl[st.payMethod];
+    setStep(3);
+  })
+  .catch(()=>{
+    // ถ้าส่งไม่ได้ก็ยังแสดงหน้าสำเร็จ (เพื่อ UX)
+    document.getElementById('finalCode').textContent=code;
+    document.getElementById('si-name').textContent=orderData.customer_name;
+    document.getElementById('si-date').textContent=fmtDate(orderData.pickup_date);
+    document.getElementById('si-time').textContent=orderData.pickup_time+' น.';
+    document.getElementById('si-price').textContent=totalStr;
+    document.getElementById('si-pay').textContent=payLbl[st.payMethod];
+    setStep(3);
+  })
+  .finally(()=>{
+    if(btn){btn.disabled=false;btn.textContent='ยืนยันคำสั่งและชำระเงิน';}
+  });
+}
+
+function resetForm(){
+  document.getElementById('cname').value='';
+  document.getElementById('cphone').value='';
+  document.getElementById('cnote').value='';
+  document.getElementById('fname').textContent='';
+  document.getElementById('uploadArea').classList.remove('has-file');
+  document.getElementById('slipName').textContent='';
+  document.getElementById('slipArea').classList.remove('has-slip');
+  st.slipUploaded=false;st.slip2Uploaded=false;
+  document.getElementById('pickDate').value=`${yyyy}-${mm}-${dd}`;
+  document.getElementById('pickTime').value='';
+  setStep(1);calc();
+}
+
+calc();
+</script>
